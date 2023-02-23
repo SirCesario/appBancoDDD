@@ -9,6 +9,7 @@ import com.appbank.domain.entitys.Transaccion;
 import com.appbank.domain.events.ClienteActualizado;
 import com.appbank.domain.events.ClienteCreado;
 import com.appbank.domain.events.CuentaAgregada;
+import com.appbank.domain.events.CuentaEliminada;
 import com.appbank.domain.values.*;
 
 import java.util.ArrayList;
@@ -33,10 +34,18 @@ public class ClienteEventChange extends EventChange {
             cliente.cuentas.add(cuenta);
         });
 
-        apply((ClienteActualizado event)->{
-            ClienteActualizado clienteActualizado = new ClienteActualizado(event.getClienteId(),event.getNombre(),event.getApellido(),event.getCorreo(),event.getTelefono());
-            cliente.actualizarCliente(new ClienteId(clienteActualizado.aggregateRootId()), new Nombre("Carlos"), new Apellido("Ramirez"), new Correo("prueba@gmail.com"),
-                    new Telefono("7500500"));
+        apply((ClienteActualizado event) -> {
+            ClienteId clienteId = ClienteId.of(event.getClienteId().toString());
+            Nombre nombre = new Nombre(event.getNombre().toString());
+            Apellido apellido = new Apellido(event.getApellido().toString());
+            Correo correo = new Correo(event.getCorreo().toString());
+            Telefono telefono = new Telefono(event.getTelefono().toString());
+            cliente.actualizarCliente(clienteId, nombre, apellido, correo, telefono);
+        });
+
+        apply((CuentaEliminada event)->{
+            cliente.quitarCuentaCliente(event.getClienteId(),event.getCuentaId());
+            cliente.cuentas.remove(event.getCuentaId());
         });
     }
 

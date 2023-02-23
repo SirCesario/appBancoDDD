@@ -7,6 +7,7 @@ import com.appbank.domain.entitys.Cuenta;
 import com.appbank.domain.events.ClienteActualizado;
 import com.appbank.domain.events.ClienteCreado;
 import com.appbank.domain.events.CuentaAgregada;
+import com.appbank.domain.events.CuentaEliminada;
 import com.appbank.domain.values.*;
 
 import java.util.*;
@@ -53,7 +54,13 @@ public class Cliente extends AggregateRoot<ClienteId> {
         Objects.requireNonNull(correo);
         Objects.requireNonNull(telefono);
         appendChange(new ClienteActualizado(id,nombre,apellido,correo,telefono)).apply();
-
     }
+
+    public void quitarCuentaCliente(ClienteId id,CuentaId cuentaId){
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(cuentaId);
+        appendChange(new CuentaEliminada(id,cuentaId)).apply();
+    }
+
 }
 

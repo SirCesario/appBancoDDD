@@ -19,9 +19,9 @@ public class ActualizarClienteUseCaseNoReactivo extends UseCaseForCommandNoReact
 
     @Override
     public List<DomainEvent> apply(ActualizarClienteCommand command){
-        List<DomainEvent> events = repository.findByIdNoReactivo(command.getClienteId());
-        Cliente cliente = Cliente.from(ClienteId.of(command.getClienteId()),events);
-        cliente.actualizarCliente(ClienteId.of(command.getClienteId()),
+        List<DomainEvent> events = repository.findByIdNoReactivo(command.getClienteId().toString());
+        Cliente cliente = Cliente.from(ClienteId.of(command.getClienteId().toString()),events);
+        cliente.actualizarCliente(ClienteId.of(command.getClienteId().toString()),
                 new Nombre(command.getNombre()),
                 new Apellido(command.getApellido()),
                         new Correo(command.getCorreo()),

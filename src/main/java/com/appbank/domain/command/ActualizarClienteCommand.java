@@ -3,13 +3,14 @@ package com.appbank.domain.command;
 
 import com.appbank.business.generic.Command;
 import com.appbank.domain.entitys.Cuenta;
+import com.appbank.domain.values.ClienteId;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ActualizarClienteCommand extends Command {
 
-    private String clienteId;
+    private ClienteId clienteId;
     private String nombre;
     private String apellido;
     private String correo;
@@ -21,7 +22,7 @@ public class ActualizarClienteCommand extends Command {
 
     }
 
-    public ActualizarClienteCommand(String clienteId, String nombre, String apellido, String correo, String telefono) {
+    public ActualizarClienteCommand(ClienteId clienteId, String nombre, String apellido, String correo, String telefono) {
         this.clienteId = clienteId;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -30,11 +31,11 @@ public class ActualizarClienteCommand extends Command {
 
     }
 
-    public String getClienteId() {
+    public ClienteId getClienteId() {
         return clienteId;
     }
 
-    public void setClienteId(String clienteId) {
+    public void setClienteId(ClienteId clienteId) {
         this.clienteId = clienteId;
     }
 

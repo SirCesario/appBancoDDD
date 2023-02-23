@@ -35,26 +35,25 @@ class ActualizarClienteUseCaseNoReactivoTest {
     @Test
     void sucessFullScenario(){
 
-        String ID = "500";
+        ClienteId ID = ClienteId.of("100");
         String NOMBRE = "Andres";
         String APELLIDO = "Suarez";
         String CORREO = "andresua@gmail.com";
         String TELEFONO = "2777777";
 
-
         ActualizarClienteCommand command = new ActualizarClienteCommand(ID,NOMBRE,APELLIDO,CORREO,TELEFONO);
 
-        ClienteCreado event = new ClienteCreado(new ClienteId(ID),new Nombre(NOMBRE),new Apellido(APELLIDO),new Correo(CORREO),new Telefono(TELEFONO));
-        event.setAggregateRootId(ID);
+        ClienteCreado event = new ClienteCreado(new ClienteId("144"),new Nombre("Julio"),new Apellido("Cuevas"),new Correo("jc123@gmail.com"),new Telefono("3125656543"));
+        event.setAggregateRootId(String.valueOf(ID));
 
-        Mockito.when(repository.saveEventNoReactivo(ArgumentMatchers.any(ClienteActualizado.class))).thenAnswer(interceptor ->
+        Mockito.when(repository.saveEventNoReactivo(ArgumentMatchers.any(ClienteActualizado.class))).thenAnswer(invocationOnMock ->
         {
-            return interceptor.getArgument(0);
+            return invocationOnMock.getArgument(0);
         });
 
         List<DomainEvent> result = useCase.apply(command);
 
-        Assertions.assertEquals(command.getClienteId(),result.get(0).aggregateRootId());
+        Assertions.assertEquals(ID, result.get(0).aggregateRootId());
         Assertions.assertInstanceOf(ClienteActualizado.class, result.get(0));
     }
 
