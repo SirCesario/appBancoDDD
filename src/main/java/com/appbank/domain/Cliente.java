@@ -4,13 +4,12 @@ package com.appbank.domain;
 import com.appbank.business.generic.AggregateRoot;
 import com.appbank.business.generic.DomainEvent;
 import com.appbank.domain.entitys.Cuenta;
+import com.appbank.domain.events.ClienteActualizado;
 import com.appbank.domain.events.ClienteCreado;
 import com.appbank.domain.events.CuentaAgregada;
 import com.appbank.domain.values.*;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Cliente extends AggregateRoot<ClienteId> {
 
@@ -45,6 +44,16 @@ public class Cliente extends AggregateRoot<ClienteId> {
         Objects.requireNonNull(tipoCuenta);
         Objects.requireNonNull(saldo);
         appendChange(new CuentaAgregada(id,clienteId,fechaCreacionCuenta,tipoCuenta,saldo)).apply();
+    }
+
+    public void actualizarCliente(ClienteId id,Nombre nombre,Apellido apellido,Correo correo,Telefono telefono){
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(nombre);
+        Objects.requireNonNull(apellido);
+        Objects.requireNonNull(correo);
+        Objects.requireNonNull(telefono);
+        appendChange(new ClienteActualizado(id,nombre,apellido,correo,telefono)).apply();
+
     }
 }
 

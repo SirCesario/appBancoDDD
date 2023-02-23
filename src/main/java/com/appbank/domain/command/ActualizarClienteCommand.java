@@ -2,6 +2,10 @@ package com.appbank.domain.command;
 
 
 import com.appbank.business.generic.Command;
+import com.appbank.domain.entitys.Cuenta;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ActualizarClienteCommand extends Command {
 
@@ -10,6 +14,8 @@ public class ActualizarClienteCommand extends Command {
     private String apellido;
     private String correo;
     private String telefono;
+
+
 
     public ActualizarClienteCommand(){
 
@@ -21,6 +27,7 @@ public class ActualizarClienteCommand extends Command {
         this.apellido = apellido;
         this.correo = correo;
         this.telefono = telefono;
+
     }
 
     public String getClienteId() {
@@ -62,4 +69,6 @@ public class ActualizarClienteCommand extends Command {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+
 }

@@ -1,19 +1,19 @@
 package com.appbank.domain;
 
 
+import com.appbank.business.generic.DomainEvent;
 import com.appbank.business.generic.EventChange;
 import com.appbank.domain.entitys.Cuenta;
 
 import com.appbank.domain.entitys.Transaccion;
+import com.appbank.domain.events.ClienteActualizado;
 import com.appbank.domain.events.ClienteCreado;
 import com.appbank.domain.events.CuentaAgregada;
-import com.appbank.domain.values.ClienteId;
-import com.appbank.domain.values.FechaCreacionCuenta;
-import com.appbank.domain.values.Saldo;
-import com.appbank.domain.values.TipoCuenta;
+import com.appbank.domain.values.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ClienteEventChange extends EventChange {
@@ -31,6 +31,12 @@ public class ClienteEventChange extends EventChange {
             Cuenta cuenta = new Cuenta(event.getCuentaId(),event.getClienteId(),event.getFechaCreacionCuenta(),
                     event.getTipoCuenta(),event.getSaldo(),new HashSet<Transaccion>());
             cliente.cuentas.add(cuenta);
+        });
+
+        apply((ClienteActualizado event)->{
+            ClienteActualizado clienteActualizado = new ClienteActualizado(event.getClienteId(),event.getNombre(),event.getApellido(),event.getCorreo(),event.getTelefono());
+            cliente.actualizarCliente(new ClienteId(clienteActualizado.aggregateRootId()), new Nombre("Carlos"), new Apellido("Ramirez"), new Correo("prueba@gmail.com"),
+                    new Telefono("7500500"));
         });
     }
 
