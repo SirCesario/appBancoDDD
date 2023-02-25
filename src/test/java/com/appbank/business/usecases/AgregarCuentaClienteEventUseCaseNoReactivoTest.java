@@ -20,7 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class AgregarCuentaClienteUseCaseNoReactivoTest {
+class AgregarCuentaClienteEventUseCaseNoReactivoTest {
 
     @Mock
     private RepositoryExample repository;
