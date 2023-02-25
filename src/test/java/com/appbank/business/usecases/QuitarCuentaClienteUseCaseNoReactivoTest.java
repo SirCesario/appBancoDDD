@@ -4,9 +4,9 @@ import com.appbank.business.gateways.RepositoryExample;
 import com.appbank.business.generic.DomainEvent;
 import com.appbank.domain.Cliente;
 import com.appbank.domain.command.QuitarCuentaClienteCommand;
+import com.appbank.domain.events.ClienteCreado;
 import com.appbank.domain.events.CuentaEliminada;
-import com.appbank.domain.values.ClienteId;
-import com.appbank.domain.values.CuentaId;
+import com.appbank.domain.values.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,14 +44,26 @@ class QuitarCuentaClienteUseCaseNoReactivoTest {
 
         QuitarCuentaClienteCommand command = new QuitarCuentaClienteCommand( id,cuentaId);
 
-        // Configurar el repositorio para devolver una lista vacía de eventos
-        Mockito.when(repository.saveEventNoReactivo(ArgumentMatchers.any())).thenReturn(new ArrayList<DomainEvent>());
+        ClienteCreado clienteCreado = new ClienteCreado(new ClienteId("100"),new Nombre("carlos"),new Apellido("polo"),new Correo("123456@gmail.com"),
+                new Telefono("7500600"));
+        clienteCreado.setAggregateRootId("100");
+
+        List<DomainEvent> events = new ArrayList<>();
+        events.add(clienteCreado);
+
+        Mockito.when(repository.findByIdNoReactivo(Mockito.any())).thenReturn(events);
+
+        QuitarCuentaClienteUseCaseNoReactivo quitarCuentaClienteUseCaseNoReactivo = new QuitarCuentaClienteUseCaseNoReactivo(repository);
+
+        QuitarCuentaClienteCommand quitarCuentaClienteCommand = new QuitarCuentaClienteCommand();
+        quitarCuentaClienteCommand.getCuentaId();
+        quitarCuentaClienteCommand.getClienteId();
 
 
-        // Ejecutar el caso de uso
+
         List<DomainEvent> result = useCase.apply(command);
 
-        // Verificar que el resultado contiene un evento CuentaClienteQuitada con el id del cliente
+
         Assertions.assertEquals(1, result.size());
         Assertions.assertTrue(result.get(0) instanceof CuentaEliminada);
         Assertions.assertEquals(id, result.get(0).aggregateRootId());
